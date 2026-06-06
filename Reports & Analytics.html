@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports & Analytics</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f9;
+            margin:0;
+            padding:20px;
+        }
+
+        .container{
+            max-width:1200px;
+            margin:auto;
+        }
+
+        h1{
+            text-align:center;
+            color:#2c3e50;
+        }
+
+        .cards{
+            display:flex;
+            gap:20px;
+            flex-wrap:wrap;
+            margin-bottom:20px;
+        }
+
+        .card{
+            flex:1;
+            min-width:220px;
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            text-align:center;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card h2{
+            margin:0;
+            color:#3498db;
+        }
+
+        .card p{
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .section{
+            background:white;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h3{
+            color:#34495e;
+            border-bottom:2px solid #ddd;
+            padding-bottom:10px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:15px;
+        }
+
+        table th,
+        table td{
+            border:1px solid #ddd;
+            padding:10px;
+            text-align:left;
+        }
+
+        table th{
+            background:#2c3e50;
+            color:white;
+        }
+
+        .line.chart{
+            height:25px;
+            background:#3498db;
+            margin:10px 0;
+            border-radius:5px;
+            color:white;
+            padding-left:10px;
+            line-height:25px;
+        }
+
+        .btn{
+            background:#28a745;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .btn:hover{
+            background:#218838;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Reports & Analytics Dashboard</h1>
+
+    <!-- Procurement Statistics -->
+    <div class="cards">
+
+        <div class="card">
+            <h2>150</h2>
+            <p>Total RFQs</p>
+        </div>
+
+        <div class="card">
+            <h2>85</h2>
+            <p>Purchase Orders</p>
+        </div>
+
+        <div class="card">
+            <h2>45</h2>
+            <p>Active Vendors</p>
+        </div>
+
+        <div class="card">
+            <h2>₹12,50,000</h2>
+            <p>Total Spend</p>
+        </div>
+
+    </div>
+
+    <!-- Vendor Performance Analytics -->
+    <div class="section">
+
+        <h3>Vendor Performance Analytics</h3>
+
+        <table>
+            <tr>
+                <th>Vendor</th>
+                <th>Orders</th>
+                <th>On-Time Delivery</th>
+                <th>Rating</th>
+            </tr>
+
+            <tr>
+                <td>ABC Suppliers</td>
+                <td>35</td>
+                <td>95%</td>
+                <td>4.8/5</td>
+            </tr>
+
+            <tr>
+                <td>XYZ Traders</td>
+                <td>28</td>
+                <td>90%</td>
+                <td>4.5/5</td>
+            </tr>
+
+            <tr>
+                <td>PQR Industries</td>
+                <td>18</td>
+                <td>87%</td>
+                <td>4.2/5</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- Spending Summary -->
+    <div class="section">
+
+        <h3>Spending Summary</h3>
+
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Amount Spent</th>
+            </tr>
+
+            <tr>
+                <td>Raw Materials</td>
+                <td>₹6,00,000</td>
+            </tr>
+
+            <tr>
+                <td>IT Equipment</td>
+                <td>₹3,50,000</td>
+            </tr>
+
+            <tr>
+                <td>Office Supplies</td>
+                <td>₹1,50,000</td>
+            </tr>
+
+            <tr>
+                <td>Services</td>
+                <td>₹1,50,000</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- Monthly Procurement Trends -->
+    <div class="section">
+
+        <h3>Monthly Procurement Trends</h3>
+
+        <p>January</p>
+        <div class="line chart" style="width:40%;">₹2,00,000</div>
+
+        <p>February</p>
+        <div class="line chart" style="width:55%;">₹2,75,000</div>
+
+        <p>March</p>
+        <div class="line chart" style="width:70%;">₹3,50,000</div>
+
+        <p>April</p>
+        <div class="line chart" style="width:85%;">₹4,25,000</div>
+
+    </div>
+
+    <!-- Export Reports -->
+    <div class="section">
+
+        <h3>Exportable Reports</h3>
+
+        <button class="btn">Export PDF</button>
+        <button class="btn">Export Excel</button>
+
+    </div>
+
+</div>
+
+</body>
+</html>
