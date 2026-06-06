@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vendor Quotation Submission Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 500px;
+            margin: auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Vendor Quotation Submission Form</h2>
+
+    <form action="#" method="post">
+
+        <label for="rfq">RFQ ID</label>
+        <input type="text" id="rfq" name="rfq" placeholder="Enter RFQ ID" required>
+
+        <label for="price">Pricing Details (₹)</label>
+        <input type="number" id="price" name="price" placeholder="Enter Price" required>
+
+        <label for="delivery">Delivery Timeline (Days)</label>
+        <input type="number" id="delivery" name="delivery" placeholder="Enter Delivery Days" required>
+
+        <label for="notes">Notes / Comments</label>
+        <textarea id="notes" name="notes" rows="4"
+                  placeholder="Enter notes or comments"></textarea>
+
+        <label for="quotation">Editable Quotation</label>
+        <textarea id="quotation" name="quotation" rows="6"
+                  placeholder="Enter quotation details here"></textarea>
+
+        <input type="submit" value="Submit Quotation">
+
+    </form>
+
+</div>
+
+</body>
+</html>
