@@ -6,237 +6,239 @@
 <title>VendorBridge - Purchase Order & Invoice</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+  *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+  }
 
-body{
-    background:#f4f6f9;
-    padding:20px;
-}
+  body{
+      background:#F2E1C3;
+      padding:20px;
+      min-height:100vh;
+      position:relative;
+  }
 
-.container{
-    max-width:1000px;
-    margin:auto;
-}
+  body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.10), transparent 40%),
+        radial-gradient(circle at 90% 30%, rgba(16, 185, 129, 0.10), transparent 45%);
+      pointer-events:none;
+      z-index:-1;
+  }
 
-.card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    margin-bottom:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
+  .container{
+      max-width:1100px;
+      margin:0 auto;
+  }
 
-h1,h2{
-    margin-bottom:15px;
-    color:#1f2937;
-}
+  .card{
+      background:white;
+      padding:22px;
+      border-radius:16px;
+      margin-bottom:20px;
+      box-shadow:0 6px 22px rgba(0,0,0,0.08);
+  }
 
-.form-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
+  h1,h2{
+      margin-bottom:15px;
+      color:#1f2937;
+  }
 
-input,select{
-    width:100%;
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
-}
+  .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+  }
 
-button{
-    background:#2563eb;
-    color:white;
-    border:none;
-    padding:12px 20px;
-    border-radius:5px;
-    cursor:pointer;
-    margin-right:10px;
-    margin-top:10px;
-}
+  label{
+      display:block;
+      font-weight:900;
+      color:#374151;
+      margin-bottom:6px;
+  }
 
-button:hover{
-    background:#1d4ed8;
-}
+  input,select{
+      width:100%;
+      padding:11px 12px;
+      border:1px solid #e5e7eb;
+      border-radius:12px;
+      outline:none;
+  }
 
-.invoice-box{
-    border:1px solid #ddd;
-    padding:20px;
-    margin-top:15px;
-}
+  input:focus,select:focus{
+      border-color:#93c5fd;
+      box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+  }
 
-.status{
-    padding:8px 12px;
-    border-radius:5px;
-    color:white;
-    display:inline-block;
-}
+  .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:14px 0 6px;
+  }
 
-.draft{
-    background:#f59e0b;
-}
+  button{
+      background:#2563eb;
+      color:white;
+      border:none;
+      padding:12px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:900;
+  }
 
-.generated{
-    background:#10b981;
-}
+  button:hover{ background:#1d4ed8; }
 
-.sent{
-    background:#2563eb;
-}
+  .invoice-box{
+      border:1px solid #e5e7eb;
+      padding:18px;
+      border-radius:14px;
+      background:#fbfdff;
+  }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:10px;
-}
+  .status{
+      padding:8px 12px;
+      border-radius:12px;
+      color:white;
+      display:inline-block;
+      font-weight:900;
+      font-size:12px;
+  }
 
-table th,
-table td{
-    border:1px solid #ddd;
-    padding:10px;
-}
+  .draft{ background:#f59e0b; }
+  .generated{ background:#10b981; }
+  .sent{ background:#2563eb; }
 
-table th{
-    background:#f3f4f6;
-}
+  table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+  }
 
-@media(max-width:768px){
+  table th, table td{
+      border:1px solid #e5e7eb;
+      padding:10px;
+      text-align:left;
+      color:#111827;
+  }
 
-.form-grid{
-    grid-template-columns:1fr;
-}
+  table th{ background:#f3f4f6; }
 
-}
+  @media(max-width:768px){
+      .form-grid{ grid-template-columns:1fr; }
+  }
 </style>
 </head>
+
 <body>
 
 <div class="container">
 
-<div class="card">
-<h1>Purchase Order & Invoice Generation</h1>
+    <div class="card">
+        <h1>Purchase Order & Invoice Generation</h1>
 
-<div class="form-grid">
+        <div class="form-grid">
+            <div>
+                <label>PO Number</label>
+                <input type="text" id="poNumber" readonly>
+            </div>
 
-<div>
-<label>PO Number</label>
-<input type="text" id="poNumber" readonly>
-</div>
+            <div>
+                <label>Vendor Name</label>
+                <input type="text" id="vendorName">
+            </div>
 
-<div>
-<label>Vendor Name</label>
-<input type="text" id="vendorName">
-</div>
+            <div>
+                <label>Item Name</label>
+                <input type="text" id="itemName">
+            </div>
 
-<div>
-<label>Item Name</label>
-<input type="text" id="itemName">
-</div>
+            <div>
+                <label>Quantity</label>
+                <input type="number" id="quantity" min="1">
+            </div>
 
-<div>
-<label>Quantity</label>
-<input type="number" id="quantity" min="1">
-</div>
+            <div>
+                <label>Unit Price (₹)</label>
+                <input type="number" id="unitPrice" min="0">
+            </div>
 
-<div>
-<label>Unit Price (₹)</label>
-<input type="number" id="unitPrice" min="0">
-</div>
+            <div>
+                <label>Status</label>
+                <select id="status">
+                    <option>Draft</option>
+                    <option>Generated</option>
+                    <option>Sent</option>
+                </select>
+            </div>
 
-<div>
-<label>Status</label>
-<select id="status">
-<option>Draft</option>
-<option>Generated</option>
-<option>Sent</option>
-</select>
-</div>
+            <div style="grid-column: 1 / -1;">
+                <label>Email</label>
+                <input type="email" id="email">
+            </div>
+        </div>
 
-<div>
-<label>Email</label>
-<input type="email" id="email">
-</div>
+        <div class="btn-row">
+            <button type="button" onclick="generateInvoice()">Generate Invoice</button>
+            <button type="button" onclick="printInvoice()">Print Invoice</button>
+            <button type="button" onclick="sendEmail()">Send Invoice</button>
+        </div>
 
-</div>
+    </div>
 
-<button onclick="generateInvoice()">Generate Invoice</button>
-<button onclick="printInvoice()">Print Invoice</button>
-<button onclick="sendEmail()">Send Invoice</button>
+    <div class="card">
+        <h2>Invoice Preview</h2>
 
-</div>
+        <div id="invoiceArea">
+            <p>
+                Status:
+                <span id="statusBadge" class="status draft">Draft</span>
+            </p>
 
-<div class="card">
+            <div class="invoice-box">
+                <h2 style="margin-bottom:10px;">VendorBridge ERP Invoice</h2>
 
-<h2>Invoice Preview</h2>
+                <p><strong>PO Number:</strong> <span id="showPo"></span></p>
+                <p><strong>Vendor:</strong> <span id="showVendor"></span></p>
 
-<div id="invoiceArea">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
 
-<p>Status:
-<span id="statusBadge" class="status draft">
-Draft
-</span>
-</p>
+                    <tbody>
+                        <tr>
+                            <td id="showItem"></td>
+                            <td id="showQty"></td>
+                            <td id="showUnit"></td>
+                            <td id="showSub"></td>
+                        </tr>
+                    </tbody>
+                </table>
 
-<div class="invoice-box">
+                <br>
 
-<h2>VendorBridge ERP Invoice</h2>
+                <p><strong>Subtotal:</strong> ₹<span id="subtotal">0</span></p>
+                <p><strong>GST (18%):</strong> ₹<span id="gst">0</span></p>
+                <p><strong>Grand Total:</strong> ₹<span id="grandTotal">0</span></p>
+            </div>
+        </div>
 
-<p><strong>PO Number:</strong>
-<span id="showPo"></span>
-</p>
-
-<p><strong>Vendor:</strong>
-<span id="showVendor"></span>
-</p>
-
-<table>
-
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Unit Price</th>
-<th>Total</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td id="showItem"></td>
-<td id="showQty"></td>
-<td id="showUnit"></td>
-<td id="showSub"></td>
-</tr>
-</tbody>
-
-</table>
-
-<br>
-
-<p><strong>Subtotal:</strong>
-₹<span id="subtotal">0</span></p>
-
-<p><strong>GST (18%):</strong>
-₹<span id="gst">0</span></p>
-
-<p><strong>Grand Total:</strong>
-₹<span id="grandTotal">0</span></p>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
 <script>
-
 const poNumber =
 "PO-" +
 new Date().getFullYear() +
@@ -244,9 +246,14 @@ new Date().getFullYear() +
 Math.floor(1000 + Math.random()*9000);
 
 document.getElementById("poNumber").value = poNumber;
+
 document.getElementById("showPo").innerText = poNumber;
 
 function generateInvoice(){
+
+if(!requireStep('PURCHASE', 'flow.approvalDecision')){
+    return;
+}
 
 const vendor =
 document.getElementById("vendorName").value.trim();
@@ -278,9 +285,13 @@ const gst = subtotal * 0.18;
 const total = subtotal + gst;
 
 document.getElementById("showVendor").innerText = vendor;
+
 document.getElementById("showItem").innerText = item;
+
 document.getElementById("showQty").innerText = qty;
+
 document.getElementById("showUnit").innerText = "₹" + unit.toFixed(2);
+
 document.getElementById("showSub").innerText = "₹" + subtotal.toFixed(2);
 
 document.getElementById("subtotal").innerText =
@@ -313,12 +324,28 @@ badge.classList.add("sent");
 
 alert("Invoice Generated Successfully");
 
+// Save PO/invoice state for activity page
+const selectedQuotation = getFlowState('flow.selectedQuotation') || {};
+setFlowState('flow.generatedPO', {
+    poNumber: document.getElementById('poNumber').value,
+    vendor,
+    item: document.getElementById('itemName').value.trim(),
+    qty: parseFloat(document.getElementById('quantity').value),
+    unitPrice: parseFloat(document.getElementById('unitPrice').value),
+    status,
+    invoiceTotal: document.getElementById('grandTotal').innerText,
+    linkedQuotationNo: selectedQuotation.quotationNo,
+    generatedAt: new Date().toISOString()
+});
+
+requireStep('ACTIVITY', 'flow.generatedPO');
+window.location = 'activity.html';
+
 }
 
+
 function printInvoice(){
-
 window.print();
-
 }
 
 function sendEmail(){
@@ -361,3 +388,4 @@ body;
 
 </body>
 </html>
+
