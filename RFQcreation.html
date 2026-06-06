@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFQ Creation - VendorBridge</title>
+
+<style>
+  *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family: Arial, sans-serif;
+  }
+
+  body{
+      background:#F2E1C3;
+      min-height:100vh;
+  }
+
+  body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.10), transparent 40%),
+        radial-gradient(circle at 90% 30%, rgba(16, 185, 129, 0.10), transparent 45%);
+      pointer-events:none;
+      z-index:-1;
+  }
+
+  .navbar{
+      background:#2563eb;
+      color:white;
+      padding:15px 30px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+  }
+
+  .container{
+      width:90%;
+      max-width:1100px;
+      margin:24px auto 40px;
+  }
+
+  .page-title{
+      color:#111827;
+      font-size:28px;
+      font-weight:900;
+      margin:10px 0 18px;
+  }
+
+  .card{
+      background:white;
+      padding:22px;
+      border-radius:14px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom:18px;
+  }
+
+  .card h3{
+      color:#2563eb;
+      margin-bottom:15px;
+      font-size:18px;
+      font-weight:900;
+  }
+
+  label{
+      display:block;
+      margin-bottom:6px;
+      font-weight:800;
+      color:#374151;
+  }
+
+  input,
+  textarea,
+  select{
+      width:100%;
+      padding:11px 12px;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+      outline:none;
+  }
+
+  input:focus, textarea:focus, select:focus{
+      border-color:#93c5fd;
+      box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+  }
+
+  textarea{ resize:vertical; }
+
+  .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px;
+  }
+
+  .quantity-box{
+      display:flex;
+      align-items:center;
+      gap:10px;
+  }
+
+  .quantity-box button{
+      width:40px;
+      height:40px;
+      border:none;
+      background:#2563eb;
+      color:white;
+      font-size:18px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:900;
+      transition:0.2s;
+  }
+
+  .quantity-box button:hover{ background:#1d4ed8; }
+
+  .vendor-list{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+  }
+
+  .vendor-item{
+      background:#f3f4f6;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid #eef2ff;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:#111827;
+  }
+
+  .upload-box{
+      border:2px dashed #2563eb;
+      padding:24px;
+      text-align:center;
+      border-radius:14px;
+      background:rgba(37,99,235,0.03);
+      color:#334155;
+  }
+
+  .actions{
+      text-align:center;
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+  }
+
+  .btn{
+      padding:12px 22px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      margin:5px;
+      font-size:16px;
+      font-weight:900;
+      min-width:170px;
+      transition:0.2s;
+  }
+
+  .btn-primary{ background:#2563eb; color:white; }
+  .btn-success{ background:#22c55e; color:white; }
+  .btn-danger{ background:#ef4444; color:white; }
+
+  .btn-primary:hover{ background:#1d4ed8; }
+  .btn-success:hover{ background:#16a34a; }
+  .btn-danger:hover{ background:#dc2626; }
+
+  @media(max-width:768px){
+      .vendor-list{ grid-template-columns:1fr; }
+      .grid-2{ grid-template-columns:1fr; }
+      .container{ width:92%; }
+      .page-title{ font-size:22px; }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2 style="font-size:18px;">Procurement Management System</h2>
+    <div>👤 Admin</div>
+</div>
+
+<div class="container">
+
+    <h1 class="page-title">Create New RFQ</h1>
+
+    <div class="card">
+        <h3>RFQ Information</h3>
+
+        <div class="form-group">
+            <label>RFQ Title</label>
+            <input type="text" placeholder="Enter RFQ Title">
+        </div>
+
+        <div class="form-group" style="margin-top:15px;">
+            <label>Description</label>
+            <textarea rows="4" placeholder="Enter RFQ Description"></textarea>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Product / Service Details</h3>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Product / Service Name</label>
+                <input type="text" placeholder="Product Name">
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select>
+                    <option>Select Category</option>
+                    <option>Electronics</option>
+                    <option>Furniture</option>
+                    <option>IT Services</option>
+                    <option>Office Supplies</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:15px;">
+            <div class="form-group">
+                <label>Quantity</label>
+                <div class="quantity-box">
+                    <button onclick="decreaseQty()">-</button>
+                    <input type="number" id="qty" value="1" min="1">
+                    <button onclick="increaseQty()">+</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Unit</label>
+                <select>
+                    <option>Pieces</option>
+                    <option>Kg</option>
+                    <option>Liters</option>
+                    <option>Boxes</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Vendor Assignment</h3>
+
+        <div class="form-group">
+            <label>Search Vendor</label>
+            <input type="text" placeholder="Search Vendor">
+        </div>
+
+        <div class="vendor-list" style="margin-top:15px;">
+            <div class="vendor-item"><input type="checkbox"> <span>Vendor A</span></div>
+            <div class="vendor-item"><input type="checkbox"> <span>Vendor B</span></div>
+            <div class="vendor-item"><input type="checkbox"> <span>Vendor C</span></div>
+            <div class="vendor-item"><input type="checkbox"> <span>Vendor D</span></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Attachments</h3>
+
+        <div class="upload-box">
+            <p style="font-weight:800; margin-bottom:8px;">Drag & Drop Files Here</p>
+            <input type="file" multiple>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Deadline Selection</h3>
+
+        <div class="grid-2">
+            <div class="form-group">
+                <label>Closing Date</label>
+                <input type="date">
+            </div>
+
+            <div class="form-group">
+                <label>Closing Time</label>
+                <input type="time">
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="btn btn-primary" onclick="saveRFQ(false)">Save Draft</button>
+        <button class="btn btn-success" onclick="saveRFQ(true)">Submit RFQ</button>
+        <button class="btn btn-danger" onclick="clearGuidedFlow(); window.location='dashboard.html'">Cancel</button>
+    </div>
+
+</div>
+
+<script>
+function increaseQty() {
+    let qty = document.getElementById("qty");
+    qty.value = parseInt(qty.value) + 1;
+}
+
+function decreaseQty() {
+    let qty = document.getElementById("qty");
+
+    if(parseInt(qty.value) > 1){
+        qty.value = parseInt(qty.value) - 1;
+    }
+}
+
+function saveRFQ(isSubmit){
+    const titleInput = document.querySelector('input[placeholder="Enter RFQ Title"]');
+    const descTextarea = document.querySelector('textarea[placeholder="Enter RFQ Description"]');
+    const productInput = document.querySelectorAll('input[placeholder="Product Name"]')[0];
+
+    const rfqTitle = (titleInput && titleInput.value ? titleInput.value.trim() : "");
+    const rfqDesc = (descTextarea && descTextarea.value ? descTextarea.value.trim() : "");
+    const productName = (productInput && productInput.value ? productInput.value.trim() : "");
+    const category = (document.querySelector('select').value || "");
+    const qty = parseInt(document.getElementById('qty').value || '1');
+
+    if(isSubmit){
+        if(!rfqTitle || !productName){
+            alert("Fill RFQ Title and Product/Service Name before submitting.");
+            return;
+        }
+    }
+
+    const rfqObj = {
+        rfqTitle,
+        rfqDesc,
+        productName,
+        category,
+        qty,
+        submittedAt: new Date().toISOString(),
+        status: isSubmit ? 'SUBMITTED' : 'DRAFT'
+    };
+
+    setFlowState('flow.selectedRFQ', rfqObj);
+
+    if(isSubmit){
+        requireStep('VENDOR_QUOTATION', 'flow.selectedRFQ');
+        window.location = 'vendorQuotation.html';
+    }else{
+        alert('Draft saved. Submit RFQ to continue.');
+    }
+}
+</script>
+
+</body>
+</html>
+
