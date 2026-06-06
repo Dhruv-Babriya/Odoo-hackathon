@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity Logs & Notifications</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color:#f4f6f9;
+            margin:0;
+            padding:20px;
+        }
+
+        .container{
+            max-width:1000px;
+            margin:auto;
+        }
+
+        h1{
+            text-align:center;
+            color:#2c3e50;
+        }
+
+        .section{
+            background:white;
+            padding:20px;
+            margin-bottom:20px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            color:#34495e;
+            border-bottom:2px solid #ddd;
+            padding-bottom:10px;
+        }
+
+        .notification{
+            padding:12px;
+            margin:10px 0;
+            border-left:5px solid #3498db;
+            background:#ecf5ff;
+            border-radius:5px;
+        }
+
+        .alert{
+            border-left:5px solid #e74c3c;
+            background:#fdecea;
+        }
+
+        .invoice{
+            border-left:5px solid #27ae60;
+            background:#eafaf1;
+        }
+
+        .timeline{
+            list-style:none;
+            padding:0;
+        }
+
+        .timeline li{
+            padding:12px;
+            margin-bottom:10px;
+            background:#f8f9fa;
+            border-left:4px solid #3498db;
+            border-radius:5px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        table th,
+        table td{
+            border:1px solid #ddd;
+            padding:10px;
+            text-align:left;
+        }
+
+        table th{
+            background:#2c3e50;
+            color:white;
+        }
+
+        tr:nth-child(even){
+            background:#f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Activity Logs & Notifications</h1>
+
+    <!-- RFQ Notifications -->
+    <div class="section">
+        <h2>RFQ Notifications</h2>
+
+        <div class="notification">
+            RFQ #RFQ101 has been published.
+        </div>
+
+        <div class="notification">
+            RFQ #RFQ102 deadline is approaching.
+        </div>
+    </div>
+
+    <!-- Approval Alerts -->
+    <div class="section">
+        <h2>Approval Alerts</h2>
+
+        <div class="notification alert">
+            Purchase Order PO-205 is awaiting approval.
+        </div>
+
+        <div class="notification alert">
+            Vendor registration requires approval.
+        </div>
+    </div>
+
+    <!-- Invoice Updates -->
+    <div class="section">
+        <h2>Invoice Updates</h2>
+
+        <div class="notification invoice">
+            Invoice INV-501 has been approved.
+        </div>
+
+        <div class="notification invoice">
+            Invoice INV-502 payment processed.
+        </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="section">
+        <h2>Activity Timeline</h2>
+
+        <ul class="timeline">
+            <li>10:00 AM - RFQ #101 created.</li>
+            <li>11:30 AM - Vendor submitted quotation.</li>
+            <li>01:00 PM - Purchase Order generated.</li>
+            <li>03:15 PM - Invoice uploaded.</li>
+        </ul>
+    </div>
+
+    <!-- Audit Logs -->
+    <div class="section">
+        <h2>Audit Logs</h2>
+
+        <table>
+            <tr>
+                <th>Date & Time</th>
+                <th>User</th>
+                <th>Action</th>
+            </tr>
+
+            <tr>
+                <td>06-06-2026 10:00 AM</td>
+                <td>Admin</td>
+                <td>Created RFQ #101</td>
+            </tr>
+
+            <tr>
+                <td>06-06-2026 11:30 AM</td>
+                <td>Vendor ABC</td>
+                <td>Submitted Quotation</td>
+            </tr>
+
+            <tr>
+                <td>06-06-2026 01:00 PM</td>
+                <td>Manager</td>
+                <td>Approved Purchase Order</td>
+            </tr>
+
+            <tr>
+                <td>06-06-2026 03:15 PM</td>
+                <td>Accounts</td>
+                <td>Processed Invoice INV-502</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
