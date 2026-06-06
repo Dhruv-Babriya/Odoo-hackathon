@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorBridge - Quotation Comparison</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#1f2937;
+}
+
+.controls{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:15px;
+}
+
+input,
+select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+.table-card{
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#2563eb;
+    color:white;
+    padding:14px;
+    text-align:left;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #e5e7eb;
+}
+
+tr:hover{
+    background:#f9fafb;
+}
+
+.lowest-price{
+    background:#dcfce7 !important;
+    font-weight:bold;
+}
+
+.rating{
+    color:#f59e0b;
+    font-size:18px;
+}
+
+.status{
+    padding:5px 10px;
+    border-radius:20px;
+    color:white;
+    font-size:12px;
+}
+
+.preferred{
+    background:#10b981;
+}
+
+.approved{
+    background:#2563eb;
+}
+
+.new{
+    background:#f59e0b;
+}
+
+.action-btn{
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.action-btn:hover{
+    background:#1d4ed8;
+}
+
+@media(max-width:768px){
+
+    .controls{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Quotation Comparison</h1>
+    </div>
+
+    <div class="controls">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search Vendor..."
+            onkeyup="filterTable()"
+        >
+
+        <select id="sortOption" onchange="sortTable()">
+            <option value="">Sort By</option>
+            <option value="price">Lowest Price</option>
+            <option value="delivery">Fastest Delivery</option>
+            <option value="rating">Highest Rating</option>
+        </select>
+
+    </div>
+
+    <div class="table-card">
+
+        <table id="quotationTable">
+
+            <thead>
+                <tr>
+                    <th>Vendor</th>
+                    <th>Quotation No.</th>
+                    <th>Price (₹)</th>
+                    <th>Delivery Days</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="quotationBody">
+
+                <tr>
+                    <td>ABC Traders</td>
+                    <td>QT001</td>
+                    <td class="price">45000</td>
+                    <td>5</td>
+                    <td data-rating="5">
+                        <span class="rating">★★★★★</span>
+                    </td>
+                    <td>
+                        <span class="status preferred">
+                            Preferred
+                        </span>
+                    </td>
+                    <td>
+                        <button class="action-btn">
+                            Select
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>XYZ Technologies</td>
+                    <td>QT002</td>
+                    <td class="price">48000</td>
+                    <td>3</td>
+                    <td data-rating="4">
+                        <span class="rating">★★★★☆</span>
+                    </td>
+                    <td>
+                        <span class="status approved">
+                            Approved
+                        </span>
+                    </td>
+                    <td>
+                        <button class="action-btn">
+                            Select
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Global Supplies</td>
+                    <td>QT003</td>
+                    <td class="price">43000</td>
+                    <td>7</td>
+                    <td data-rating="3">
+                        <span class="rating">★★★☆☆</span>
+                    </td>
+                    <td>
+                        <span class="status new">
+                            New
+                        </span>
+                    </td>
+                    <td>
+                        <button class="action-btn">
+                            Select
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+highlightLowestPrice();
+
+function highlightLowestPrice(){
+
+    const rows =
+        document.querySelectorAll("#quotationBody tr");
+
+    let lowestPrice = Infinity;
+    let lowestRow = null;
+
+    rows.forEach(function(row){
+
+        const price =
+            parseFloat(
+                row.querySelector(".price").textContent
+            );
+
+        if(price < lowestPrice){
+            lowestPrice = price;
+            lowestRow = row;
+        }
+    });
+
+    if(lowestRow){
+        lowestRow.classList.add("lowest-price");
+    }
+}
+
+function filterTable(){
+
+    const search =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const rows =
+        document.querySelectorAll("#quotationBody tr");
+
+    rows.forEach(function(row){
+
+        const text =
+            row.textContent.toLowerCase();
+
+        if(text.includes(search)){
+            row.style.display = "";
+        }else{
+            row.style.display = "none";
+        }
+    });
+}
+
+function sortTable(){
+
+    const option =
+        document.getElementById("sortOption").value;
+
+    const tbody =
+        document.getElementById("quotationBody");
+
+    const rows =
+        Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort(function(a,b){
+
+        if(option === "price"){
+
+            return (
+                parseFloat(
+                    a.cells[2].textContent
+                )
+                -
+                parseFloat(
+                    b.cells[2].textContent
+                )
+            );
+        }
+
+        if(option === "delivery"){
+
+            return (
+                parseInt(
+                    a.cells[3].textContent
+                )
+                -
+                parseInt(
+                    b.cells[3].textContent
+                )
+            );
+        }
+
+        if(option === "rating"){
+
+            return (
+                parseInt(
+                    b.cells[4].dataset.rating
+                )
+                -
+                parseInt(
+                    a.cells[4].dataset.rating
+                )
+            );
+        }
+
+        return 0;
+    });
+
+    rows.forEach(function(row){
+        tbody.appendChild(row);
+    });
+
+    document
+        .querySelectorAll("#quotationBody tr")
+        .forEach(function(r){
+            r.classList.remove("lowest-price");
+        });
+
+    highlightLowestPrice();
+}
+
+</script>
+
+</body>
+</html>
