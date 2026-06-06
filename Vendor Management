@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorBridge - Vendor Management</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.header h1{
+    color:#1f2937;
+}
+
+.btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#1d4ed8;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.filters{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:15px;
+}
+
+input,select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#e5e7eb;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+.status{
+    color:white;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+.active{
+    background:#10b981;
+}
+
+.inactive{
+    background:#6b7280;
+}
+
+.pending{
+    background:#f59e0b;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:900px;
+    padding:20px;
+    border-radius:10px;
+    max-height:90vh;
+    overflow:auto;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+.modal-buttons{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.close-btn{
+    background:#dc2626;
+}
+
+.close-btn:hover{
+    background:#b91c1c;
+}
+
+@media(max-width:768px){
+
+    .filters{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Vendor Management</h1>
+        <button class="btn" onclick="openModal()">+ Add Vendor</button>
+    </div>
+
+    <div class="card">
+        <div class="filters">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search Vendor..."
+                onkeyup="filterTable()"
+            >
+
+            <select id="categoryFilter" onchange="filterTable()">
+                <option value="">All Categories</option>
+                <option>IT Equipment</option>
+                <option>Office Supplies</option>
+                <option>Logistics</option>
+            </select>
+
+            <select id="statusFilter" onchange="filterTable()">
+                <option value="">All Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+                <option>Pending</option>
+            </select>
+
+        </div>
+    </div>
+
+    <div class="card">
+
+        <table id="vendorTable">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Vendor Name</th>
+                    <th>Category</th>
+                    <th>GST Number</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="vendorBody">
+
+                <tr>
+                    <td>VEN001</td>
+                    <td>ABC Traders</td>
+                    <td>Office Supplies</td>
+                    <td>24ABCDE1234F1Z5</td>
+                    <td>9876543210</td>
+                    <td>abc@gmail.com</td>
+                    <td><span class="status active">Active</span></td>
+                </tr>
+
+                <tr>
+                    <td>VEN002</td>
+                    <td>XYZ Technologies</td>
+                    <td>IT Equipment</td>
+                    <td>24XYZAB1234F1Z5</td>
+                    <td>9876500000</td>
+                    <td>xyz@gmail.com</td>
+                    <td><span class="status pending">Pending</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<div class="modal" id="vendorModal">
+
+    <div class="modal-content">
+
+        <h2>Add Vendor</h2>
+
+        <br>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Vendor Name</label>
+                <input type="text" id="vendorName">
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select id="vendorCategory">
+                    <option>IT Equipment</option>
+                    <option>Office Supplies</option>
+                    <option>Logistics</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>GST Number</label>
+                <input type="text" id="gstNumber">
+            </div>
+
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="text" id="contactNumber">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email">
+            </div>
+
+            <div class="form-group">
+                <label>Status</label>
+                <select id="vendorStatus">
+                    <option>Active</option>
+                    <option>Inactive</option>
+                    <option>Pending</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="modal-buttons">
+            <button class="btn" onclick="addVendor()">Save Vendor</button>
+            <button class="btn close-btn" onclick="closeModal()">Close</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let vendorCounter = 3;
+
+function openModal(){
+    document.getElementById("vendorModal").style.display = "flex";
+}
+
+function closeModal(){
+    document.getElementById("vendorModal").style.display = "none";
+}
+
+function addVendor(){
+
+    const vendorName = document.getElementById("vendorName").value.trim();
+    const category = document.getElementById("vendorCategory").value;
+    const gst = document.getElementById("gstNumber").value.trim();
+    const contact = document.getElementById("contactNumber").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const status = document.getElementById("vendorStatus").value;
+
+    if(
+        vendorName === "" ||
+        gst === "" ||
+        contact === "" ||
+        email === ""
+    ){
+        alert("Please fill all fields");
+        return;
+    }
+
+    const row = document.createElement("tr");
+
+    let statusClass = "active";
+
+    if(status === "Inactive"){
+        statusClass = "inactive";
+    }
+
+    if(status === "Pending"){
+        statusClass = "pending";
+    }
+
+    row.innerHTML = `
+        <td>VEN${String(vendorCounter).padStart(3,'0')}</td>
+        <td>${vendorName}</td>
+        <td>${category}</td>
+        <td>${gst}</td>
+        <td>${contact}</td>
+        <td>${email}</td>
+        <td><span class="status ${statusClass}">${status}</span></td>
+    `;
+
+    document.getElementById("vendorBody").appendChild(row);
+
+    vendorCounter++;
+
+    document.getElementById("vendorName").value = "";
+    document.getElementById("gstNumber").value = "";
+    document.getElementById("contactNumber").value = "";
+    document.getElementById("email").value = "";
+
+    closeModal();
+}
+
+function filterTable(){
+
+    const search =
+        document.getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+    const category =
+        document.getElementById("categoryFilter")
+        .value
+        .toLowerCase();
+
+    const status =
+        document.getElementById("statusFilter")
+        .value
+        .toLowerCase();
+
+    const rows =
+        document.querySelectorAll("#vendorBody tr");
+
+    rows.forEach(row => {
+
+        const text =
+            row.innerText.toLowerCase();
+
+        const rowCategory =
+            row.cells[2].innerText.toLowerCase();
+
+        const rowStatus =
+            row.cells[6].innerText.toLowerCase();
+
+        const matchSearch =
+            text.includes(search);
+
+        const matchCategory =
+            category === "" ||
+            rowCategory === category;
+
+        const matchStatus =
+            status === "" ||
+            rowStatus === status;
+
+        row.style.display =
+            (matchSearch && matchCategory && matchStatus)
+            ? ""
+            : "none";
+    });
+}
+
+</script>
+
+</body>
+</html>
