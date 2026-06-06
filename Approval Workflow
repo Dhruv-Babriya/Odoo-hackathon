@@ -1,390 +1,275 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VendorBridge - Approval Workflow</title>
+    <title>Approval Workflow</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-    background:#f4f6f9;
-    padding:20px;
-}
+        body {
+            background: #F2E1C3;
+            margin: 0;
+            padding: 20px;
+            min-height:100vh;
+        }
 
-.container{
-    max-width:1200px;
-    margin:auto;
-}
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            background:
+              radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.10), transparent 40%),
+              radial-gradient(circle at 90% 30%, rgba(16, 185, 129, 0.10), transparent 45%);
+            pointer-events:none;
+            z-index:-1;
+        }
 
-.card{
-    background:white;
-    border-radius:10px;
-    padding:20px;
-    margin-bottom:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
+        .container {
+            max-width: 1050px;
+            margin: auto;
+        }
 
-h1,h2{
-    margin-bottom:15px;
-    color:#1f2937;
-}
+        .card {
+            background: white;
+            padding: 22px;
+            margin-bottom: 18px;
+            border-radius: 16px;
+            box-shadow: 0px 6px 22px rgba(0,0,0,0.08);
+            border:1px solid rgba(229,231,235,0.8);
+        }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
+        h1 {
+            text-align: center;
+            color: #111827;
+            font-size: 28px;
+            font-weight: 900;
+            margin: 18px 0 22px;
+        }
 
-th{
-    background:#2563eb;
-    color:white;
-    padding:12px;
-    text-align:left;
-}
+        h2 {
+            color: #1f2937;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
 
-td{
-    padding:12px;
-    border-bottom:1px solid #ddd;
-}
+        label {
+            font-weight: 900;
+            color:#374151;
+        }
 
-button{
-    border:none;
-    padding:8px 14px;
-    border-radius:5px;
-    color:white;
-    cursor:pointer;
-    margin-right:5px;
-}
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            outline:none;
+        }
 
-.approve-btn{
-    background:#10b981;
-}
+        textarea:focus{
+            border-color:#93c5fd;
+            box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+        }
 
-.reject-btn{
-    background:#ef4444;
-}
+        .btn {
+            padding: 12px 18px;
+            margin-top: 15px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 900;
+            margin-right:10px;
+        }
 
-.status{
-    padding:6px 12px;
-    border-radius:20px;
-    color:white;
-    font-size:12px;
-}
+        .approve { background-color: #22c55e; }
+        .reject { background-color: #ef4444; }
 
-.submitted{
-    background:#f59e0b;
-}
+        .approve:hover{ background:#16a34a; }
+        .reject:hover{ background:#dc2626; }
 
-.review{
-    background:#3b82f6;
-}
+        .status {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            color: white;
+            font-weight: 900;
+            font-size: 12px;
+        }
 
-.approved{
-    background:#10b981;
-}
+        .pending { background-color: #f59e0b; }
+        .approved { background-color: #10b981; }
 
-.rejected{
-    background:#ef4444;
-}
+        .timeline {
+            list-style: none;
+            padding: 0;
+        }
 
-textarea{
-    width:100%;
-    padding:10px;
-    min-height:80px;
-    border:1px solid #ccc;
-    border-radius:5px;
-}
+        .timeline li {
+            background: #f9fafb;
+            margin-bottom: 10px;
+            padding: 12px;
+            border-left: 6px solid #2563eb;
+            border-radius: 12px;
+            font-weight: 700;
+            color:#111827;
+        }
 
-.timeline{
-    list-style:none;
-}
+        .workflow {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            gap:10px;
+            flex-wrap:wrap;
+        }
 
-.timeline li{
-    padding:12px;
-    margin-bottom:10px;
-    background:#f9fafb;
-    border-left:4px solid #2563eb;
-}
+        .step {
+            flex: 1;
+            min-width: 190px;
+            text-align: center;
+            padding: 14px;
+            background: #f3f4f6;
+            border-radius: 14px;
+            font-weight: 900;
+            color:#374151;
+        }
 
-.workflow{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
+        .active {
+            background: #2563eb;
+            color: white;
+        }
 
-.step{
-    padding:10px 15px;
-    border-radius:20px;
-    background:#e5e7eb;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-.active-step{
-    background:#2563eb;
-    color:white;
-}
+        table th,
+        table td {
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            text-align: left;
+        }
 
-@media(max-width:768px){
-
-table{
-display:block;
-overflow-x:auto;
-}
-
-}
-</style>
+        table th {
+            background: #111827;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
 
-<div class="card">
+    <h1>Approval Workflow</h1>
 
-<h1>Approval Workflow</h1>
+    <div class="card">
+        <h2>Approve / Reject Request</h2>
 
-<div class="workflow">
-<div class="step">Submitted</div>
-<div class="step active-step">Under Review</div>
-<div class="step">Approved / Rejected</div>
-</div>
+        <p><strong>Request ID:</strong> PR-1001</p>
+        <p><strong>Requested By:</strong> Procurement Team</p>
 
-</div>
+        <label>Approval Remarks</label>
+        <textarea placeholder="Enter your remarks here..."></textarea>
 
-<div class="card">
+        <br>
 
-<h2>Procurement Requests</h2>
+        <button class="btn approve" onclick="decideApproval(true)">Approve</button>
+        <button class="btn reject" onclick="decideApproval(false)">Reject</button>
+    </div>
 
-<table>
+    <div class="card">
+        <h2>Status Tracking</h2>
 
-<thead>
-<tr>
-<th>Request ID</th>
-<th>Vendor</th>
-<th>Amount</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
+        <p>
+            Current Status:
+            <span class="status pending">Pending Approval</span>
+        </p>
+    </div>
 
-<tbody>
+    <div class="card">
+        <h2>Workflow State Transitions</h2>
 
-<tr id="row1">
+        <div class="workflow">
+            <div class="step">Submitted</div>
+            <div class="step active">Manager Approval</div>
+            <div class="step">Finance Approval</div>
+            <div class="step">Completed</div>
+        </div>
+    </div>
 
-<td>REQ-1001</td>
-<td>ABC Traders</td>
-<td>₹50,000</td>
+    <div class="card">
+        <h2>Approval Timeline</h2>
 
-<td>
-<span id="status1" class="status review">
-Under Review
-</span>
-</td>
+        <ul class="timeline">
+            <li>09:00 AM - Purchase Request Submitted</li>
+            <li>10:30 AM - Sent to Manager for Approval</li>
+            <li>11:00 AM - Under Review</li>
+        </ul>
+    </div>
 
-<td>
-<button
-class="approve-btn"
-onclick="approveRequest(1)">
-Approve
-</button>
+    <div class="card">
+        <h2>Approval Audit Log</h2>
 
-<button
-class="reject-btn"
-onclick="rejectRequest(1)">
-Reject
-</button>
-</td>
+        <table>
+            <tr>
+                <th>Date & Time</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Remarks</th>
+            </tr>
 
-</tr>
+            <tr>
+                <td>06-06-2026 09:00 AM</td>
+                <td>Employee</td>
+                <td>Submitted Request</td>
+                <td>Purchase of laptops</td>
+            </tr>
 
-<tr id="row2">
-
-<td>REQ-1002</td>
-<td>XYZ Technologies</td>
-<td>₹1,25,000</td>
-
-<td>
-<span id="status2" class="status review">
-Under Review
-</span>
-</td>
-
-<td>
-<button
-class="approve-btn"
-onclick="approveRequest(2)">
-Approve
-</button>
-
-<button
-class="reject-btn"
-onclick="rejectRequest(2)">
-Reject
-</button>
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-<div class="card">
-
-<h2>Approval Remarks</h2>
-
-<textarea
-id="remarks"
-placeholder="Enter approval or rejection remarks..."
-></textarea>
-
-</div>
-
-<div class="card">
-
-<h2>Approval Timeline</h2>
-
-<ul
-class="timeline"
-id="timeline">
-
-<li>
-Request Submitted - Procurement Team
-</li>
-
-<li>
-Request Moved To Review Stage
-</li>
-
-</ul>
-
-</div>
+            <tr>
+                <td>06-06-2026 10:30 AM</td>
+                <td>System</td>
+                <td>Forwarded for Approval</td>
+                <td>Manager Review Required</td>
+            </tr>
+        </table>
+    </div>
 
 </div>
 
 <script>
+function decideApproval(isApproved){
+    if(!requireStep('APPROVAL', 'flow.selectedQuotation')){
+        return;
+    }
 
-function getCurrentTime(){
+    const remarksEl = document.querySelector('textarea');
+    const remarks = (remarksEl && remarksEl.value ? remarksEl.value.trim() : '');
 
-const now = new Date();
+    setFlowState('flow.approvalDecision', {
+        decision: isApproved ? 'APPROVED' : 'REJECTED',
+        remarks,
+        decidedAt: new Date().toISOString()
+    });
 
-return now.toLocaleString();
-
+    if(isApproved){
+        requireStep('PURCHASE', 'flow.approvalDecision');
+        window.location = 'purchase.html';
+    }else{
+        alert('Request rejected. Flow stopped.');
+        window.location = 'activity.html';
+    }
 }
-
-function addTimeline(message){
-
-const timeline =
-document.getElementById("timeline");
-
-const li =
-document.createElement("li");
-
-li.innerHTML =
-"<strong>" +
-getCurrentTime() +
-"</strong><br>" +
-message;
-
-timeline.prepend(li);
-
-}
-
-function approveRequest(id){
-
-const remarks =
-document.getElementById("remarks")
-.value
-.trim();
-
-if(remarks === ""){
-
-alert(
-"Please enter approval remarks."
-);
-
-return;
-
-}
-
-const status =
-document.getElementById(
-"status" + id
-);
-
-status.innerText = "Approved";
-
-status.className =
-"status approved";
-
-addTimeline(
-"Request REQ-100" +
-id +
-" Approved.<br>Remarks: " +
-remarks
-);
-
-alert(
-"Request Approved Successfully"
-);
-
-document.getElementById(
-"remarks"
-).value = "";
-
-}
-
-function rejectRequest(id){
-
-const remarks =
-document.getElementById("remarks")
-.value
-.trim();
-
-if(remarks === ""){
-
-alert(
-"Please enter rejection remarks."
-);
-
-return;
-
-}
-
-const status =
-document.getElementById(
-"status" + id
-);
-
-status.innerText = "Rejected";
-
-status.className =
-"status rejected";
-
-addTimeline(
-"Request REQ-100" +
-id +
-" Rejected.<br>Remarks: " +
-remarks
-);
-
-alert(
-"Request Rejected Successfully"
-);
-
-document.getElementById(
-"remarks"
-).value = "";
-
-}
-
 </script>
 
 </body>
 </html>
+
