@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VendorBridge - Approval Workflow</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+h1,h2{
+    margin-bottom:15px;
+    color:#1f2937;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#2563eb;
+    color:white;
+    padding:12px;
+    text-align:left;
+}
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+button{
+    border:none;
+    padding:8px 14px;
+    border-radius:5px;
+    color:white;
+    cursor:pointer;
+    margin-right:5px;
+}
+
+.approve-btn{
+    background:#10b981;
+}
+
+.reject-btn{
+    background:#ef4444;
+}
+
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    color:white;
+    font-size:12px;
+}
+
+.submitted{
+    background:#f59e0b;
+}
+
+.review{
+    background:#3b82f6;
+}
+
+.approved{
+    background:#10b981;
+}
+
+.rejected{
+    background:#ef4444;
+}
+
+textarea{
+    width:100%;
+    padding:10px;
+    min-height:80px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.timeline{
+    list-style:none;
+}
+
+.timeline li{
+    padding:12px;
+    margin-bottom:10px;
+    background:#f9fafb;
+    border-left:4px solid #2563eb;
+}
+
+.workflow{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.step{
+    padding:10px 15px;
+    border-radius:20px;
+    background:#e5e7eb;
+}
+
+.active-step{
+    background:#2563eb;
+    color:white;
+}
+
+@media(max-width:768px){
+
+table{
+display:block;
+overflow-x:auto;
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>Approval Workflow</h1>
+
+<div class="workflow">
+<div class="step">Submitted</div>
+<div class="step active-step">Under Review</div>
+<div class="step">Approved / Rejected</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Procurement Requests</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Request ID</th>
+<th>Vendor</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr id="row1">
+
+<td>REQ-1001</td>
+<td>ABC Traders</td>
+<td>₹50,000</td>
+
+<td>
+<span id="status1" class="status review">
+Under Review
+</span>
+</td>
+
+<td>
+<button
+class="approve-btn"
+onclick="approveRequest(1)">
+Approve
+</button>
+
+<button
+class="reject-btn"
+onclick="rejectRequest(1)">
+Reject
+</button>
+</td>
+
+</tr>
+
+<tr id="row2">
+
+<td>REQ-1002</td>
+<td>XYZ Technologies</td>
+<td>₹1,25,000</td>
+
+<td>
+<span id="status2" class="status review">
+Under Review
+</span>
+</td>
+
+<td>
+<button
+class="approve-btn"
+onclick="approveRequest(2)">
+Approve
+</button>
+
+<button
+class="reject-btn"
+onclick="rejectRequest(2)">
+Reject
+</button>
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Approval Remarks</h2>
+
+<textarea
+id="remarks"
+placeholder="Enter approval or rejection remarks..."
+></textarea>
+
+</div>
+
+<div class="card">
+
+<h2>Approval Timeline</h2>
+
+<ul
+class="timeline"
+id="timeline">
+
+<li>
+Request Submitted - Procurement Team
+</li>
+
+<li>
+Request Moved To Review Stage
+</li>
+
+</ul>
+
+</div>
+
+</div>
+
+<script>
+
+function getCurrentTime(){
+
+const now = new Date();
+
+return now.toLocaleString();
+
+}
+
+function addTimeline(message){
+
+const timeline =
+document.getElementById("timeline");
+
+const li =
+document.createElement("li");
+
+li.innerHTML =
+"<strong>" +
+getCurrentTime() +
+"</strong><br>" +
+message;
+
+timeline.prepend(li);
+
+}
+
+function approveRequest(id){
+
+const remarks =
+document.getElementById("remarks")
+.value
+.trim();
+
+if(remarks === ""){
+
+alert(
+"Please enter approval remarks."
+);
+
+return;
+
+}
+
+const status =
+document.getElementById(
+"status" + id
+);
+
+status.innerText = "Approved";
+
+status.className =
+"status approved";
+
+addTimeline(
+"Request REQ-100" +
+id +
+" Approved.<br>Remarks: " +
+remarks
+);
+
+alert(
+"Request Approved Successfully"
+);
+
+document.getElementById(
+"remarks"
+).value = "";
+
+}
+
+function rejectRequest(id){
+
+const remarks =
+document.getElementById("remarks")
+.value
+.trim();
+
+if(remarks === ""){
+
+alert(
+"Please enter rejection remarks."
+);
+
+return;
+
+}
+
+const status =
+document.getElementById(
+"status" + id
+);
+
+status.innerText = "Rejected";
+
+status.className =
+"status rejected";
+
+addTimeline(
+"Request REQ-100" +
+id +
+" Rejected.<br>Remarks: " +
+remarks
+);
+
+alert(
+"Request Rejected Successfully"
+);
+
+document.getElementById(
+"remarks"
+).value = "";
+
+}
+
+</script>
+
+</body>
+</html>
