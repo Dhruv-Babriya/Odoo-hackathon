@@ -14,8 +14,19 @@
 }
 
 body{
-    background:#f4f6f9;
+    background:#F2E1C3;
     padding:20px;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.10), transparent 40%),
+      radial-gradient(circle at 90% 30%, rgba(16, 185, 129, 0.10), transparent 45%);
+    pointer-events:none;
+    z-index:-1;
 }
 
 .container{
@@ -32,6 +43,7 @@ body{
 
 .header h1{
     color:#1f2937;
+    font-weight:900;
 }
 
 .btn{
@@ -91,17 +103,9 @@ td{
     font-size:12px;
 }
 
-.active{
-    background:#10b981;
-}
-
-.inactive{
-    background:#6b7280;
-}
-
-.pending{
-    background:#f59e0b;
-}
+.active{ background:#10b981; }
+.inactive{ background:#6b7280; }
+.pending{ background:#f59e0b; }
 
 .modal{
     display:none;
@@ -144,28 +148,13 @@ td{
     gap:10px;
 }
 
-.close-btn{
-    background:#dc2626;
-}
-
-.close-btn:hover{
-    background:#b91c1c;
-}
+.close-btn{ background:#dc2626; }
+.close-btn:hover{ background:#b91c1c; }
 
 @media(max-width:768px){
-
-    .filters{
-        grid-template-columns:1fr;
-    }
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    table{
-        display:block;
-        overflow-x:auto;
-    }
+    .filters{ grid-template-columns:1fr; }
+    .form-grid{ grid-template-columns:1fr; }
+    table{ display:block; overflow-x:auto; }
 }
 </style>
 </head>
@@ -180,7 +169,6 @@ td{
 
     <div class="card">
         <div class="filters">
-
             <input
                 type="text"
                 id="searchInput"
@@ -201,14 +189,11 @@ td{
                 <option>Inactive</option>
                 <option>Pending</option>
             </select>
-
         </div>
     </div>
 
     <div class="card">
-
         <table id="vendorTable">
-
             <thead>
                 <tr>
                     <th>ID</th>
@@ -222,7 +207,6 @@ td{
             </thead>
 
             <tbody id="vendorBody">
-
                 <tr>
                     <td>VEN001</td>
                     <td>ABC Traders</td>
@@ -242,11 +226,8 @@ td{
                     <td>xyz@gmail.com</td>
                     <td><span class="status pending">Pending</span></td>
                 </tr>
-
             </tbody>
-
         </table>
-
     </div>
 
 </div>
@@ -254,13 +235,10 @@ td{
 <div class="modal" id="vendorModal">
 
     <div class="modal-content">
-
         <h2>Add Vendor</h2>
-
         <br>
 
         <div class="form-grid">
-
             <div class="form-group">
                 <label>Vendor Name</label>
                 <input type="text" id="vendorName">
@@ -298,7 +276,6 @@ td{
                     <option>Pending</option>
                 </select>
             </div>
-
         </div>
 
         <div class="modal-buttons">
@@ -311,7 +288,6 @@ td{
 </div>
 
 <script>
-
 let vendorCounter = 3;
 
 function openModal(){
@@ -323,7 +299,6 @@ function closeModal(){
 }
 
 function addVendor(){
-
     const vendorName = document.getElementById("vendorName").value.trim();
     const category = document.getElementById("vendorCategory").value;
     const gst = document.getElementById("gstNumber").value.trim();
@@ -376,51 +351,22 @@ function addVendor(){
 }
 
 function filterTable(){
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const category = document.getElementById("categoryFilter").value.toLowerCase();
+    const status = document.getElementById("statusFilter").value.toLowerCase();
 
-    const search =
-        document.getElementById("searchInput")
-        .value
-        .toLowerCase();
-
-    const category =
-        document.getElementById("categoryFilter")
-        .value
-        .toLowerCase();
-
-    const status =
-        document.getElementById("statusFilter")
-        .value
-        .toLowerCase();
-
-    const rows =
-        document.querySelectorAll("#vendorBody tr");
+    const rows = document.querySelectorAll("#vendorBody tr");
 
     rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        const rowCategory = row.cells[2].innerText.toLowerCase();
+        const rowStatus = row.cells[6].innerText.toLowerCase();
 
-        const text =
-            row.innerText.toLowerCase();
+        const matchSearch = text.includes(search);
+        const matchCategory = category === "" || rowCategory === category;
+        const matchStatus = status === "" || rowStatus === status;
 
-        const rowCategory =
-            row.cells[2].innerText.toLowerCase();
-
-        const rowStatus =
-            row.cells[6].innerText.toLowerCase();
-
-        const matchSearch =
-            text.includes(search);
-
-        const matchCategory =
-            category === "" ||
-            rowCategory === category;
-
-        const matchStatus =
-            status === "" ||
-            rowStatus === status;
-
-        row.style.display =
-            (matchSearch && matchCategory && matchStatus)
-            ? ""
-            : "none";
+        row.style.display = (matchSearch && matchCategory && matchStatus) ? "" : "none";
     });
 }
 
@@ -428,3 +374,4 @@ function filterTable(){
 
 </body>
 </html>
+
