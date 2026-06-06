@@ -14,16 +14,29 @@
 }
 
 body{
-    background:#f4f6f9;
+    background: #F2E1C3;
+}
+
+/* subtle page background texture */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.10), transparent 40%),
+      radial-gradient(circle at 90% 30%, rgba(16, 185, 129, 0.10), transparent 45%);
+    pointer-events:none;
+    z-index:-1;
 }
 
 .header{
-    background:#1f2937;
+    background: linear-gradient(135deg, #111827 0%, #2563eb 100%);
     color:white;
-    padding:15px 30px;
+    padding:16px 30px;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .header h1{
@@ -151,8 +164,17 @@ table td{
 
 .footer{
     text-align:center;
-    padding:20px;
-    color:#666;
+    padding:22px;
+    color:#6b7280;
+}
+
+/* small responsive improvements */
+@media (max-width: 640px){
+    .header{padding:12px 14px;}
+    .container{padding:14px;}
+    .cards{gap:14px;}
+    .section{padding:16px;}
+    table th, table td{padding:10px;}
 }
 </style>
 </head>
@@ -206,12 +228,20 @@ table td{
         <h2>Quick Actions</h2>
 
         <div class="action-buttons">
-            <button onclick="showMessage('Create Vendor')">Create Vendor</button>
-            <button onclick="showMessage('Create RFQ')">Create RFQ</button>
-            <button onclick="showMessage('Generate PO')">Generate PO</button>
-            <button onclick="showMessage('Generate Invoice')">Generate Invoice</button>
-            <button onclick="showMessage('Send Invoice')">Send Invoice</button>
-            <button onclick="showMessage('Reports')">Reports</button>
+            <button onclick="window.location='vendorManagement.html'">Vendor Management</button>
+            <button onclick="window.location='RFQcreation.html'">Create RFQ</button>
+
+
+            <button onclick="window.location='purchase.html'">Purchase</button>
+
+            <button onclick="window.location='activity.html'">Activity</button>
+            <button onclick="window.location='vendorQuotation.html'">Vendor Quotation</button>
+            <button onclick="window.location='QuotationComparison.html'">Quotation Comparison</button>
+            <button onclick="window.location='approval.html'">Approval</button>
+            <button onclick="window.location='report.html'">Report</button>
+
+
+
         </div>
     </div>
 
